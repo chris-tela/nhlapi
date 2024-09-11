@@ -84,8 +84,12 @@ const Random = () => {
                 division: guessedPlayerData.division,
                 correct: isCorrect,
                 cellStyles: {
-                    team: guessedPlayerData.past_teams.slice(-1).join(', ') === player.past_teams.slice(-1).join(', ') ? (isCorrect ? 'correct-cell' : 'past-team-cell') : (player.past_teams.includes(guessedPlayerData.past_teams.slice(-1).join(', ')) ? 'past-team-cell' : 'incorrect-cell'),
-                    goals: guessedPlayerData.goals === player.goals ? 'correct-cell' : 'incorrect-cell',
+                    team: guessedPlayerData.past_teams.slice(-1).join(', ') === player.past_teams.slice(-1).join(', ') 
+                    ? 'correct-cell' 
+                    : (player.past_teams.includes(guessedPlayerData.past_teams.slice(-1).join(', ')) 
+                        ? 'past-team-cell' 
+                        : 'incorrect-cell'),
+                                    goals: guessedPlayerData.goals === player.goals ? 'correct-cell' : 'incorrect-cell',
                     assists: guessedPlayerData.assists === player.assists ? 'correct-cell' : 'incorrect-cell',
                     age: guessedPlayerData.age === player.age ? 'correct-cell' : 'incorrect-cell',
                     height: guessedPlayerData.height === player.height ? 'correct-cell' : 'incorrect-cell',
@@ -193,8 +197,8 @@ const Random = () => {
                                     </td>
                                     <td className={pastGuess.cellStyles.age}>
                                         {pastGuess.age}
-                                        {pastGuess.age < player.age && <span className="arrow-down"> ↓ </span>}
-                                        {pastGuess.age > player.age && <span className="arrow-up"> ↑ </span>}
+                                        {pastGuess.age < player.age && <span className="arrow-up"> ↑ </span>}
+                                        {pastGuess.age > player.age && <span className="arrow-down"> ↓ </span>}
                                     </td>
                                     <td className={pastGuess.cellStyles.height}>{pastGuess.height}</td>
                                     <td className={pastGuess.cellStyles.country}>{pastGuess.country}</td>

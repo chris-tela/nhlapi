@@ -42,11 +42,11 @@ async def team_data(db: Session = Depends(get_db)):
     list_of_seasons = requests.get(f"https://api-web.nhle.com/v1/roster-season/{current_team[0]}").json()
     base_url = get_base_url(current_team[0])
 
-
+ 
 
     while len(teams) > 0 and len(list_of_seasons) > 0:
         link = get_json_url(base_url, list_of_seasons[0])
-        list_of_seasons.pop(0)
+        list_of_seasons.pop(0) 
         print(link)
             
             # try-except loop to cycle through years where team didnt exist for whatever reason (lockout, before inaugration year, etc)

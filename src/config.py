@@ -14,4 +14,5 @@ class Settings(BaseSettings):
 
 # instance of settings class above, performs validation
 settings = Settings()
+print(settings.dict())
 
