@@ -26,6 +26,5 @@ One random NHL player is picked out from the database to be the "mystery player"
 
 **Preview:**
 
-![Example](https://github.com/chris-tela/nhlapi/blob/main/Screenshot%202025-01-11%20181418.png)
-![Example](https://github.com/chris-tela/nhlapi/blob/main/Screenshot%202025-01-11%20181441.png)
+![Example](https://github.com/chris-tela/nhlapi/blob/main/game.png)
 
