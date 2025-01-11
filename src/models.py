@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, Boolean, ARRAY, SmallInteger
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.dialects.postgresql import JSONB
+from pydantic import BaseModel
 
 
 Base = declarative_base()
@@ -87,3 +88,4 @@ class CombinedPlayerData(Base):
     round = Column(Integer, nullable=True)
     pick = Column(Integer, nullable=True)
     awards = Column(JSONB, nullable=True)
+

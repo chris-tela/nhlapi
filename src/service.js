@@ -22,3 +22,6 @@ export const getAllPlayers = async () => {
   return getData('http://127.0.0.1:8000/all_names')
 }
 
+export const filterData = async (player) => {
+  return getData('http://127.0.0.1:8000/filter', player)
+}

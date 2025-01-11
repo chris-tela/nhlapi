@@ -16,6 +16,7 @@ const Random = () => {
     const [gameOver, setGameOver] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
     const [winner, setWinner] = useState(null);
+    const [remainingCount, setRemainingCount] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -42,7 +43,6 @@ const Random = () => {
         const filteredSuggestions = allPlayers.filter(player =>
             player.toLowerCase().includes(value.toLowerCase())
         );
-
         setSuggestions(filteredSuggestions);
     };
 
@@ -68,7 +68,10 @@ const Random = () => {
                     break;
                 }
             }
-
+            
+            
+            //
+            
             const isCorrect = guessedPlayerData.name.toLowerCase() === player.name.toLowerCase();
 
             const newGuess = {
@@ -116,6 +119,35 @@ const Random = () => {
                 setFeedback('Incorrect, try again.');
             }
 
+            // *
+            const filterPlayers = async (guessedPlayerData) => {
+                const filter_data = {
+                    "goals": guessedPlayerData.goals,
+                    "assists": guessedPlayerData.assists,
+                    "age": guessedPlayerData.age,
+                    "mystery_goals": player.goals,
+                    "mystery_assists": player.assists,
+                    "mystery_age": player.age
+                };
+                try {
+                    const response = await fetch('http://127.0.0.1:8000/filter', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(filter_data),
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        setRemainingCount(result.remaining_count);
+                        console.log(result);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            };
+            filterPlayers(guessedPlayerData);
             setGuess('');
             setSuggestions([]);
         }
@@ -126,12 +158,66 @@ const Random = () => {
         setWinner(null);
     };
 
+    const handleNewGame = async () => {
+        setLoading(true);
+        try {
+            // Reset all states
+            setGuessCount(0);
+            setPastGuesses([]);
+            setGameOver(false);
+            setShowPopup(false);
+            setWinner(null);
+            setFeedback('');
+            setPosFeedback('');
+            setRemainingCount(null);
+            setGuess('');
+            setSuggestions([]);
+            
+            const [playerData, playersList] = await Promise.all([
+                getRandomPlayer(),
+                getAllPlayers()
+            ]);
+            
+            setPlayer(playerData["player"]);
+            setAllPlayers(playersList["names"]);
+            
+            const filter_data = {
+                "goals": 0,
+                "assists": 0,
+                "age": 0,
+                "mystery_goals": playerData["player"].goals,
+                "mystery_assists": playerData["player"].assists,
+                "mystery_age": playerData["player"].age
+            };
+            
+            await fetch('http://127.0.0.1:8000/filter', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(filter_data),
+            });
+            
+        } catch (error) {
+            setError('Error starting new game');
+            console.error('Error:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     if (loading) return <p>Loading player data...</p>;
     if (error) return <p>{error}</p>;
 
     return (
         <div className="container">
             <h2>Mystery Player</h2>
+
+            {remainingCount !== null && (
+                <div className="remaining-count">
+                    <p>Possible Players Remaining: {remainingCount}</p>
+                </div>
+            )}
 
             <div className="input-container">
                 <h3>Guess the Player's Name (Guesses Left: {7 - guessCount}):</h3>
@@ -164,8 +250,8 @@ const Random = () => {
             {posFeedback && <p className="posFeedback-message"> {posFeedback} </p>}
 
             {pastGuesses.length > 0 && (
-                <div className="chart-container">
-                    <table className="chart-table">
+                <div className="mystery-player">
+                    <table>
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -215,11 +301,23 @@ const Random = () => {
             {showPopup && winner && (
                 <div className="popup">
                     <div className="popup-content">
-                        <span className="close-button" onClick={handlePopupClose}>×</span>
+                        <button className="close-button" onClick={handlePopupClose}>×</button>
                         <h2>Congratulations!</h2>
-                        <p>You guessed the player correctly!</p>
+                        <p>You correctly guessed {winner.name}!</p>
                         <img src={winner.headshot} alt={winner.name} className="headshot" />
+                        <p>Position: {winner.position} | Team: {winner.team}</p>
+                        <button className="new-game-button" onClick={handleNewGame}>
+                            Play Again
+                        </button>
                     </div>
+                </div>
+            )}
+
+            {gameOver && !winner && (
+                <div className="game-over">
+                    <button className="new-game-button" onClick={handleNewGame}>
+                        Start New Game
+                    </button>
                 </div>
             )}
         </div>

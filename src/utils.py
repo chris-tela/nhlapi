@@ -256,5 +256,40 @@ def get_draft(id, response):
     finally:
         return draftee
 
+filtered = {"goals": [], "assists": [], "age": []}
+def process_filter(goals: int, assists: int, age: int, mystery_goals: int, mystery_assists: int, mystery_age: int) -> dict:
+    # create a empty filtered dictionary, and add the minimum, actual value, and max (5000) to goals and assists.
+    filtered["goals"].append(goals)
+    filtered["assists"].append(assists)
+    filtered["age"].append(age)
+    filtered["goals"].append(5000)
+    filtered["goals"].append(0)
+    filtered["assists"].append(5000)
+    filtered["assists"].append(0)
+    filtered["age"].append(5000)
+    filtered["age"].append(0)
+    
+    # filter goals
+    higher = [x for x in filtered["goals"] if x >= mystery_goals]
+    lower = [x for x in filtered["goals"] if x < mystery_goals]
+    higher.sort()
+    lower.sort()
+    filtered["goals"] = [lower[len(lower) - 1], higher[0]]
 
+    # filter assists
+    higher = [x for x in filtered["assists"] if x >= mystery_assists]
+    lower = [x for x in filtered["assists"] if x < mystery_assists]
+    higher.sort()
+    lower.sort()
+    filtered["assists"] = [lower[len(lower) - 1], higher[0]]
+
+    # filter age
+    higher = [x for x in filtered["age"] if x >= mystery_age]
+    lower = [x for x in filtered["age"] if x < mystery_age]
+    higher.sort()
+    lower.sort()
+    filtered["age"] = [lower[len(lower) - 1], higher[0]]
+    
+
+    return filtered
 
