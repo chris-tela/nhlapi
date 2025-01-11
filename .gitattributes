@@ -1,0 +1,29 @@
+# Mark everything as vendored by default
+* linguist-vendored
+
+# Mark source files as not vendored
+src/*.js linguist-vendored=false
+src/*.jsx linguist-vendored=false
+src/*.py linguist-vendored=false
+src/*.css linguist-vendored=false
+
+# Explicitly declare languages for specific files
+src/random.js linguist-language=JavaScript
+src/service.js linguist-language=JavaScript
+src/players.js linguist-language=JavaScript
+src/main.py linguist-language=Python
+src/utils.py linguist-language=Python
+src/config.py linguist-language=Python
+src/database.py linguist-language=Python
+
+# Documentation
+*.md linguist-documentation
+*.txt linguist-documentation
+README.md linguist-documentation
+
+# Binary files
+*.png binary
+*.jpg binary
+*.gif binary
+*.ico binary
+*.pdf binary 
