@@ -210,10 +210,10 @@ async def return_all_names(db: Session = Depends(get_db)):
 
 @app.get("/filter_players")
 async def return_filtered_players(goals, assists, age, db: Session = Depends(get_db)):
-    data = db.query(models.CombinedPlayerData).filter(models.CombinedPlayerData.goals > goals[0]).filter(
-        models.CombinedPlayerData.goals < goals[1]).filter(models.CombinedPlayerData.assists > assists[0]).filter(
-            models.CombinedPlayerData.assists < assists[1]).filter(models.CombinedPlayerData.age > age[0]).filter(
-                models.CombinedPlayerData.age < age[1]).all()
+    data = db.query(models.CombinedPlayerData).filter(models.CombinedPlayerData.goals >= goals[0]).filter(
+        models.CombinedPlayerData.goals <= goals[1]).filter(models.CombinedPlayerData.assists > assists[0]).filter(
+            models.CombinedPlayerData.assists <= assists[1]).filter(models.CombinedPlayerData.age >= age[0]).filter(
+                models.CombinedPlayerData.age <= age[1]).all()
     for name in data:
         print(name.name + " goals: " + str(name.goals) + " assists: " + str(name.assists) + " age: " + str(name.age))
     return {"length": len(data)}

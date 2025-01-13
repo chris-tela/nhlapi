@@ -270,25 +270,35 @@ def process_filter(goals: int, assists: int, age: int, mystery_goals: int, myste
     filtered["age"].append(0)
     
     # filter goals
-    higher = [x for x in filtered["goals"] if x >= mystery_goals]
-    lower = [x for x in filtered["goals"] if x < mystery_goals]
-    higher.sort()
-    lower.sort()
-    filtered["goals"] = [lower[len(lower) - 1], higher[0]]
+    if goals == mystery_goals:
+        filtered["goals"] = [goals, goals]
+    else:
+        higher = [x for x in filtered["goals"] if x >= mystery_goals]
+        lower = [x for x in filtered["goals"] if x < mystery_goals]
+        higher.sort()
+        lower.sort()
+        filtered["goals"] = [lower[len(lower) - 1], higher[0]]
 
     # filter assists
-    higher = [x for x in filtered["assists"] if x >= mystery_assists]
-    lower = [x for x in filtered["assists"] if x < mystery_assists]
-    higher.sort()
-    lower.sort()
-    filtered["assists"] = [lower[len(lower) - 1], higher[0]]
+
+    if assists == mystery_assists:
+        filtered["assists"] = [assists, assists]
+    else:
+        higher = [x for x in filtered["assists"] if x >= mystery_assists]
+        lower = [x for x in filtered["assists"] if x < mystery_assists]
+        higher.sort()
+        lower.sort()
+        filtered["assists"] = [lower[len(lower) - 1], higher[0]]
 
     # filter age
-    higher = [x for x in filtered["age"] if x >= mystery_age]
-    lower = [x for x in filtered["age"] if x < mystery_age]
-    higher.sort()
-    lower.sort()
-    filtered["age"] = [lower[len(lower) - 1], higher[0]]
+    if age == mystery_age:
+        filtered["age"] = [age, age]
+    else:
+        higher = [x for x in filtered["age"] if x >= mystery_age]
+        lower = [x for x in filtered["age"] if x < mystery_age]
+        higher.sort()
+        lower.sort()
+        filtered["age"] = [lower[len(lower) - 1], higher[0]]
     
 
     return filtered

@@ -76,6 +76,7 @@ const Random = () => {
 
             const newGuess = {
                 name: guessedPlayerData.name,
+                headshot: guessedPlayerData.headshot,
                 team: guessedPlayerData.past_teams.slice(-1).join(', '),
                 goals: guessedPlayerData.goals,
                 assists: guessedPlayerData.assists,
@@ -269,7 +270,12 @@ const Random = () => {
                         <tbody>
                             {pastGuesses.map((pastGuess, index) => (
                                 <tr key={index} className={pastGuess.correct ? 'correct' : ''}>
-                                    <td className={pastGuess.correct ? 'bold-cell' : ''}>{pastGuess.name}</td>
+                                    <td className={pastGuess.correct ? 'bold-cell' : ''}>
+                                        <div className="player-info">
+                                            <img src={pastGuess.headshot} alt={pastGuess.name} className="guess-headshot" />
+                                            <span>{pastGuess.name}</span>
+                                        </div>
+                                    </td>
                                     <td className={pastGuess.cellStyles.team}>{pastGuess.team}</td>
                                     <td className={pastGuess.cellStyles.goals}>
                                         {pastGuess.goals}
